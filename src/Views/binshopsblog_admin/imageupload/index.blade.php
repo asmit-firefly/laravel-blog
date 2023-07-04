@@ -50,7 +50,7 @@
                                         target='_blank'>[link]</a> / <span
                                         class='btn btn-sm btn-primary'
                                         style='cursor: zoom-in;'
-                                        onclick='show_uploaded_file_row("{{$id}}","{{asset(     config("binshopsblog.blog_upload_dir") . "/". $file['filename'])}}")'>show</span>
+                                        onclick='show_uploaded_file_row("{{$id}}","{{asset(config("binshopsblog.blog_upload_dir") . "/". $file['filename'])}}")'>show</span>
                             </p>
 
                             <div id="{{$id}}"></div>
@@ -94,6 +94,11 @@
                                 <img src='{{asset(     config("binshopsblog.blog_upload_dir") . "/". $smallest['filename'])}}'
                                      style='max-width:100%; height: auto;'>
                             </a>
+                            <form method="POST" action="{{ route('binshopsblog.admin.images.destroy', [$uploadedPhoto->id]) }}" id="delete-form-{{ $uploadedPhoto->id }}" class="w-full">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="mt-4 btn btn-danger" onclick="confirmDelete(event, {{ $uploadedPhoto->id }})">Delete</button>
+                            </form>
                         </div>
 
                     @else
@@ -116,3 +121,14 @@
 
 
 @endsection
+<script>
+    function confirmDelete(event, itemId) {
+        event.preventDefault(); // Prevent the form from submitting immediately
+
+        if (confirm('Are you sure you want to delete this item?')) {
+            // If the user confirms, submit the form
+            document.getElementById('delete-form-' + itemId).submit();
+        }
+    }
+
+</script>

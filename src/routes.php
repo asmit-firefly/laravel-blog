@@ -99,6 +99,7 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
 
             Route::get("/upload", "BinshopsImageUploadController@create")->name("binshopsblog.admin.images.upload");
             Route::post("/upload", "BinshopsImageUploadController@store")->name("binshopsblog.admin.images.store");
+            Route::delete("/upload/{binshopsUploadedPhoto}", "BinshopsImageUploadController@destroy")->name("binshopsblog.admin.images.destroy");
         });
 
         Route::delete('/delete_post/{blogPostId}',
