@@ -146,6 +146,8 @@ class BinshopsReaderController extends Controller
     public function viewSinglePost(Request $request)
     {
         $blogPostSlug = $request->route('blogPostSlug');
+        $recentPosts = BinshopsPostTranslation::query()->whereNot('slug', $blogPostSlug)->orderByDesc('id')->limit(5)->get();
+
 
         // the published_at + is_published are handled by BinshopsBlogPublishedScope, and don't take effect if the logged in user can manage log posts
         $blog_post = BinshopsPostTranslation::where([
@@ -163,6 +165,7 @@ class BinshopsReaderController extends Controller
         ])->get();
         return view("binshopsblog::single_post", [
             'post' => $blog_post,
+            'recentPosts' => $recentPosts,
             // the default scope only selects approved comments, ordered by id
             'comments' => $blog_post->post->comments()
                 ->with("user")
